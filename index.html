@@ -5,41 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./move.js" charset="utf-8"></script>
   <style>
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
 
-  .columns-container {
-    display: flex;
-    height: 100%;
-    width: 100%;
-  }
+    .columns-container {
+      display: flex;
+      height: 100%;
+      width: 100%;
+    }
 
-  .column {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    position: relative;
-  }
+    .column {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      position: relative;
+    }
 
-  .button {
-    position: absolute;
-    top: 10px;
-  }
+    .button {
+      position: absolute;
+      top: 10px;
+    }
 
-  .node, .load {
-    margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #aaa;
-    background-color: #fff;
-  }
+    .node, .load {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #aaa;
+      background-color: #fff;
+    }
+
+    .root-node {
+    }
 </style>
 </head>
 <body>
@@ -67,7 +70,7 @@
   </div>
 
   <script>
-  let rootname = "#root"
+    let rootname = "#root"
 
     // -- TODO
     // Maybe some way to import a tree structure
@@ -100,6 +103,7 @@
       if (node.classList.contains("node")) {
         let nodeName = node.getAttribute("name")
         if (nodeName == rootname) { return }
+
         let column = node.closest(".column")
         if (column.classList.contains("current-column")) {
           Move.remove(nodeName)
@@ -109,6 +113,7 @@
         } else if (column.classList.contains("child-column")) {
           currentMove?.removeChild(nodeName)
         }
+
         populateColumns(currentMove?.name)
       }
     });
@@ -215,6 +220,8 @@
           addColumnNode(grandparent, grandparentColumn)
         });
       });
+
+      // Add a root node to any parent columns that are empty
       if (move.parents.length == 0) {
         addColumnNode(null, parentColumn)
       } else if (!hasGrandparents) {
