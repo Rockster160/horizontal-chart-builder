@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <script src="./movesjson.js" charset="utf-8"></script> -->
   <script src="./move.js" charset="utf-8"></script>
   <style>
   body, html {
@@ -142,9 +141,15 @@
 
     let addColumnNode = function(move, column) {
       let name = move?.name || rootname
+      let names = Array.from(column.querySelectorAll(".node")).map(node => node.getAttribute("name"))
+      let dup = names.find(name_in_column => name_in_column == name);
+      if (dup) { return }
+
       const node = document.createElement("div");
       node.classList.add("node")
+
       if (!move) { node.classList.add("root-node") }
+
       node.setAttribute("name", name)
       node.setAttribute("parentIds", move?.parents?.map(ancestor => ancestor.name).join("|") || "")
       node.textContent = name;
@@ -168,7 +173,12 @@
       childColumn.innerHTML = "";
       grandchildColumn.innerHTML = "";
 
-      moves.filter(move => move.parents.length == 0).forEach(move => addColumnNode(move, childColumn));
+      moves.filter(move => move.parents.length == 0).forEach(move => {
+        addColumnNode(move, childColumn)
+        move.children.forEach(grandchild => {
+          addColumnNode(grandchild, grandchildColumn)
+        });
+      });
       addColumnNode(null, currentColumn)
     }
 
@@ -196,20 +206,19 @@
       currentNode.contentEditable = true;
 
       // Populate left column with parents
+      let hasGrandparents = false
       move.parents.forEach(parent => {
         addColumnNode(parent, parentColumn)
         // Populate outer left column with grandparents
-        let hasGrandparents = false
         parent.parents.forEach(grandparent => {
           hasGrandparents = true
           addColumnNode(grandparent, grandparentColumn)
         });
-        if (!hasGrandparents) {
-          addColumnNode(null, grandparentColumn)
-        }
       });
       if (move.parents.length == 0) {
         addColumnNode(null, parentColumn)
+      } else if (!hasGrandparents) {
+        addColumnNode(null, grandparentColumn)
       }
 
       // Populate right column with children
