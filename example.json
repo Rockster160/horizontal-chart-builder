@@ -1,0 +1,59 @@
+[
+  {
+    "name": "Trick",
+    "parents": [
+      "Parent Move 1",
+      "Parent Move 2"
+    ],
+    "children": [
+      "Child Move 1",
+      "Child Move 2"
+    ]
+  },
+  {
+    "name": "Child Move 1",
+    "parents": [
+      "Trick"
+    ],
+    "children": []
+  },
+  {
+    "name": "Parent Move 1",
+    "parents": [],
+    "children": [
+      "Trick"
+    ]
+  },
+  {
+    "name": "Child Move 2",
+    "parents": [
+      "Trick"
+    ],
+    "children": [
+      "Child2 Child"
+    ]
+  },
+  {
+    "name": "Parent Move 2",
+    "parents": [
+      "Parent2 Parent"
+    ],
+    "children": [
+      "Trick"
+    ]
+  },
+  {
+    "name": "Parent2 Parent",
+    "parents": [],
+    "children": [
+      "Parent Move 2"
+    ]
+  },
+  {
+    "name": "Child2 Child",
+    "parents": [
+      "Child Move 2"
+    ],
+    "children": []
+  }
+]

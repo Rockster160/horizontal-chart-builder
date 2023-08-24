@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <script src="./movesjson.js" charset="utf-8"></script> -->
+  <script src="./move.js" charset="utf-8"></script>
+  <style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  .columns-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+  }
+
+  .column {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    position: relative;
+  }
+
+  .button {
+    position: absolute;
+    top: 10px;
+  }
+
+  .node, .load {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #aaa;
+    background-color: #fff;
+  }
+</style>
+</head>
+<body>
+  <div class="columns-container">
+    <div class="column grandparent-column">
+      <div class="nodes"></div>
+    </div>
+    <div class="column parent-column">
+      <button class="button add-btn add-parent">Add Node</button>
+      <div class="nodes"></div>
+    </div>
+    <div class="column current-column">
+      <div class="nodes">
+        <div class="load">&lt;Click to Load JSON&gt;</div>
+      </div>
+    </div>
+    <div class="column child-column">
+      <button class="button add-btn add-child">Add Node</button>
+      <div class="nodes"></div>
+    </div>
+    <div class="column grandchild-column">
+      <button class="button save">Save</button>
+      <div class="nodes"></div>
+    </div>
+  </div>
+
+  <script>
+  let rootname = "#root"
+
+    // -- TODO
+    // Maybe some way to import a tree structure
+
+    let currentMove = undefined // Placeholder for whatever move is currently selected
+    let fileHandle = undefined // Placeholder for the opened file
+
+    document.querySelectorAll(".add-btn").forEach((button, index) => {
+      button.addEventListener("click", function() {
+        const text = prompt("Enter move name:");
+        if (text) {
+          if (button.classList.contains("add-parent")) {
+            currentMove?.addParent(text) || Move.findOrCreate(text)
+          } else if (button.classList.contains("add-child")) {
+            currentMove?.addChild(text) || Move.findOrCreate(text)
+          }
+
+          populateColumns(currentMove?.name)
+        }
+      });
+    });
+
+    document.querySelector(".save").addEventListener("click", function() {
+      save() && alert(`Saved! ${moves.length} tricks`)
+    })
+
+    document.addEventListener("contextmenu", function(event) {
+      event.preventDefault();
+      let node = event.target
+      if (node.classList.contains("node")) {
+        let nodeName = node.getAttribute("name")
+        if (nodeName == rootname) { return }
+        let column = node.closest(".column")
+        if (column.classList.contains("current-column")) {
+          Move.remove(nodeName)
+          currentMove = undefined
+        } else if (column.classList.contains("parent-column")) {
+          currentMove?.removeParent(nodeName)
+        } else if (column.classList.contains("child-column")) {
+          currentMove?.removeChild(nodeName)
+        }
+        populateColumns(currentMove?.name)
+      }
+    });
+
+    document.addEventListener("click", async function(event) {
+      if (event.target.classList.contains("load")) {
+        [fileHandle] = await window.showOpenFilePicker()
+        const file = await fileHandle.getFile();
+        const contents = await file.text();
+        Move.import(contents)
+        populateColumns(currentMove?.name)
+      }
+    });
+
+    document.addEventListener("click", function(event) {
+      if (event.target.classList.contains("node") && !event.target.classList.contains("current")) {
+        populateColumns(event.target.getAttribute("name"));
+      }
+    });
+
+    document.addEventListener("input", function(event) {
+      if (event.target.classList.contains("node") && event.target.classList.contains("current")) {
+        if (currentMove) {
+          currentMove.name = event.target.textContent
+        } else {
+          currentMove = Move.findOrCreate(event.target.textContent)
+        }
+      }
+    });
+
+    let addColumnNode = function(move, column) {
+      let name = move?.name || rootname
+      const node = document.createElement("div");
+      node.classList.add("node")
+      if (!move) { node.classList.add("root-node") }
+      node.setAttribute("name", name)
+      node.setAttribute("parentIds", move?.parents?.map(ancestor => ancestor.name).join("|") || "")
+      node.textContent = name;
+      column.appendChild(node);
+
+      return node
+    }
+
+    function populateEmpty() {
+      currentMove = null
+      const grandparentColumn = document.querySelector(".grandparent-column .nodes");
+      const parentColumn = document.querySelector(".parent-column .nodes");
+      const currentColumn = document.querySelector(".current-column .nodes");
+      const childColumn = document.querySelector(".child-column .nodes");
+      const grandchildColumn = document.querySelector(".grandchild-column .nodes");
+
+      // Clear previous content
+      grandparentColumn.innerHTML = "";
+      parentColumn.innerHTML = "";
+      currentColumn.innerHTML = "";
+      childColumn.innerHTML = "";
+      grandchildColumn.innerHTML = "";
+
+      moves.filter(move => move.parents.length == 0).forEach(move => addColumnNode(move, childColumn));
+      addColumnNode(null, currentColumn)
+    }
+
+    function populateColumns(movename) {
+      if (!movename || movename == rootname) { return populateEmpty() }
+
+      let move = Move.find(movename)
+      currentMove = move
+      const grandparentColumn = document.querySelector(".grandparent-column .nodes");
+      const parentColumn = document.querySelector(".parent-column .nodes");
+      const currentColumn = document.querySelector(".current-column .nodes");
+      const childColumn = document.querySelector(".child-column .nodes");
+      const grandchildColumn = document.querySelector(".grandchild-column .nodes");
+
+      // Clear previous content
+      grandparentColumn.innerHTML = "";
+      parentColumn.innerHTML = "";
+      currentColumn.innerHTML = "";
+      childColumn.innerHTML = "";
+      grandchildColumn.innerHTML = "";
+
+      let currentNode = addColumnNode(move, currentColumn)
+      // Add current move, and allow it to be editable
+      currentNode.classList.add("current")
+      currentNode.contentEditable = true;
+
+      // Populate left column with parents
+      move.parents.forEach(parent => {
+        addColumnNode(parent, parentColumn)
+        // Populate outer left column with grandparents
+        let hasGrandparents = false
+        parent.parents.forEach(grandparent => {
+          hasGrandparents = true
+          addColumnNode(grandparent, grandparentColumn)
+        });
+        if (!hasGrandparents) {
+          addColumnNode(null, grandparentColumn)
+        }
+      });
+      if (move.parents.length == 0) {
+        addColumnNode(null, parentColumn)
+      }
+
+      // Populate right column with children
+      move.children.forEach(child => {
+        addColumnNode(child, childColumn)
+        // Populate outer right column with grandchildren
+        child.children.forEach(grandchild => {
+          addColumnNode(grandchild, grandchildColumn)
+        });
+      });
+    }
+
+    let save = function() {
+      if (!fileHandle) {
+        console.log("No file to save to!");
+        return false
+      }
+      return writeFile(fileHandle, Move.export())
+    }
+
+    async function writeFile(fileHandle, contents) {
+      try {
+        // Support for Chrome 82 and earlier.
+        if (fileHandle.createWriter) {
+          // Create a writer (request permission if necessary).
+          const writer = await fileHandle.createWriter();
+          // Write the full length of the contents
+          await writer.write(0, new TextEncoder().encode(contents));
+          // Close the file and write the contents to disk
+          await writer.close();
+          return;
+        }
+        // For Chrome 83 and later.
+        // Create a FileSystemWritableFileStream to write to.
+        const writable = await fileHandle.createWritable();
+        // Write the contents of the file to the stream.
+        await writable.write(new TextEncoder().encode(contents));
+        // Close the file and write the contents to disk.
+        await writable.close();
+        return true
+      } catch (e) {
+        console.log(e);
+        return false
+      }
+    }
+  </script>
+</body>
+</html>

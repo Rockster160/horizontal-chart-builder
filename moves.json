@@ -1,0 +1,396 @@
+[
+  {
+    "name": "Movement",
+    "parents": [],
+    "children": [
+      "Balancing",
+      "Landing"
+    ]
+  },
+  {
+    "name": "Balancing",
+    "parents": [
+      "Movement"
+    ],
+    "children": []
+  },
+  {
+    "name": "Landing",
+    "parents": [
+      "Movement"
+    ],
+    "children": [
+      "Bent Knee",
+      "Falls",
+      "Ground Kong",
+      "Precision",
+      "Safety Tap",
+      "Spiderman"
+    ]
+  },
+  {
+    "name": "Bent Knee",
+    "parents": [
+      "Landing"
+    ],
+    "children": []
+  },
+  {
+    "name": "Falls",
+    "parents": [
+      "Landing"
+    ],
+    "children": [
+      "Back",
+      "Front",
+      "Side",
+      "Squat-Back",
+      "Squat-Front",
+      "Squat-Side"
+    ]
+  },
+  {
+    "name": "Ground Kong",
+    "parents": [
+      "Landing"
+    ],
+    "children": []
+  },
+  {
+    "name": "Precision",
+    "parents": [
+      "Landing"
+    ],
+    "children": [
+      "Bar",
+      "Running",
+      "Standing"
+    ]
+  },
+  {
+    "name": "Safety Tap",
+    "parents": [
+      "Landing"
+    ],
+    "children": []
+  },
+  {
+    "name": "Spiderman",
+    "parents": [
+      "Landing"
+    ],
+    "children": []
+  },
+  {
+    "name": "Back",
+    "parents": [
+      "Falls"
+    ],
+    "children": []
+  },
+  {
+    "name": "Front",
+    "parents": [
+      "Falls"
+    ],
+    "children": []
+  },
+  {
+    "name": "Side",
+    "parents": [
+      "Falls",
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Squat-Back",
+    "parents": [
+      "Falls"
+    ],
+    "children": []
+  },
+  {
+    "name": "Squat-Front",
+    "parents": [
+      "Falls"
+    ],
+    "children": []
+  },
+  {
+    "name": "Squat-Side",
+    "parents": [
+      "Falls"
+    ],
+    "children": []
+  },
+  {
+    "name": "Vaults",
+    "parents": [],
+    "children": [
+      "Side",
+      "Butterfly",
+      "Dash",
+      "Gate",
+      "Glide",
+      "Kash",
+      "Kong",
+      "Lazy",
+      "Monkey",
+      "Pop",
+      "Reverse",
+      "Reverse Safety",
+      "Rotary",
+      "Safety",
+      "Speed",
+      "Spin",
+      "Thief",
+      "Turn"
+    ]
+  },
+  {
+    "name": "Bar",
+    "parents": [
+      "Precision"
+    ],
+    "children": []
+  },
+  {
+    "name": "Running",
+    "parents": [
+      "Precision",
+      "Cat"
+    ],
+    "children": []
+  },
+  {
+    "name": "Standing",
+    "parents": [
+      "Precision",
+      "Cat"
+    ],
+    "children": []
+  },
+  {
+    "name": "Cat",
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": [
+      "Running",
+      "Standing",
+      "Gargoyle",
+      "Half",
+      "Quarter",
+      "Sideways"
+    ]
+  },
+  {
+    "name": "Butterfly",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Dash",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Gate",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Glide",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Kash",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Kong",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Lazy",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Monkey",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Pop",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Reverse",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Reverse Safety",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Rotary",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Safety",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Speed",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Spin",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Thief",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Turn",
+    "parents": [
+      "Vaults"
+    ],
+    "children": []
+  },
+  {
+    "name": "Wall-Ledge",
+    "parents": [],
+    "children": [
+      "Cat",
+      "Climb Up",
+      "Crane",
+      "Tictac",
+      "Wallrun",
+      "Wallstop"
+    ]
+  },
+  {
+    "name": "Climb Up",
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": []
+  },
+  {
+    "name": "Crane",
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": []
+  },
+  {
+    "name": "Tictac",
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": []
+  },
+  {
+    "name": "Wallrun",
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": []
+  },
+  {
+    "name": "Wallstop",
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": []
+  },
+  {
+    "name": "Gargoyle",
+    "parents": [
+      "Cat"
+    ],
+    "children": []
+  },
+  {
+    "name": "Half",
+    "parents": [
+      "Cat"
+    ],
+    "children": []
+  },
+  {
+    "name": "Quarter",
+    "parents": [
+      "Cat"
+    ],
+    "children": []
+  },
+  {
+    "name": "Sideways",
+    "parents": [
+      "Cat"
+    ],
+    "children": []
+  },
+  {
+    "name": "Barwork",
+    "parents": [],
+    "children": [
+      "Bar kip"
+    ]
+  },
+  {
+    "name": "Bar kip",
+    "parents": [
+      "Barwork"
+    ],
+    "children": []
+  }
+]
