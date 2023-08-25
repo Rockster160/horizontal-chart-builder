@@ -26,7 +26,7 @@
       justify-content: center;
       box-sizing: border-box;
       border: 1px solid #ccc;
-      position: relative;
+      overflow-y: auto;
     }
 
     .button {
@@ -97,27 +97,6 @@
       save() && alert(`Saved! ${moves.length} tricks`)
     })
 
-    document.addEventListener("contextmenu", function(event) {
-      event.preventDefault();
-      let node = event.target
-      if (node.classList.contains("node")) {
-        let nodeName = node.getAttribute("name")
-        if (nodeName == rootname) { return }
-
-        let column = node.closest(".column")
-        if (column.classList.contains("current-column")) {
-          Move.remove(nodeName)
-          currentMove = undefined
-        } else if (column.classList.contains("parent-column")) {
-          currentMove?.removeParent(nodeName)
-        } else if (column.classList.contains("child-column")) {
-          currentMove?.removeChild(nodeName)
-        }
-
-        populateColumns(currentMove?.name)
-      }
-    });
-
     document.addEventListener("click", async function(event) {
       if (event.target.classList.contains("load")) {
         [fileHandle] = await window.showOpenFilePicker()
@@ -141,6 +120,27 @@
         } else {
           currentMove = Move.findOrCreate(event.target.textContent)
         }
+      }
+    });
+
+    document.addEventListener("contextmenu", function(event) {
+      event.preventDefault();
+      let node = event.target
+      if (node.classList.contains("node")) {
+        let nodeName = node.getAttribute("name")
+        if (nodeName == rootname) { return }
+
+        let column = node.closest(".column")
+        if (column.classList.contains("current-column")) {
+          Move.remove(nodeName)
+          currentMove = undefined
+        } else if (column.classList.contains("parent-column")) {
+          currentMove?.removeParent(nodeName)
+        } else if (column.classList.contains("child-column")) {
+          currentMove?.removeChild(nodeName)
+        }
+
+        populateColumns(currentMove?.name)
       }
     });
 
@@ -237,6 +237,22 @@
         });
       });
     }
+
+    document.addEventListener("dragover", function(e) {
+      e.preventDefault()
+    })
+    document.addEventListener("drop", async function(e) {
+      e.preventDefault()
+
+      const files = e.dataTransfer.files
+      if (files.length > 0) {
+        let file = files[0]
+        fileHandle = file
+        let contents = await file.text();
+        Move.import(contents)
+        populateColumns(currentMove?.name)
+      }
+    })
 
     let save = function() {
       if (!fileHandle) {
