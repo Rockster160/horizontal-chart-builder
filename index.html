@@ -94,7 +94,11 @@
     });
 
     document.querySelector(".save").addEventListener("click", function() {
-      save() && alert(`Saved! ${moves.length} tricks`)
+      if (save()) {
+        alert(`Saved! ${moves.length} tricks`)
+      } else {
+        alert("Failed to save!")
+      }
     })
 
     document.addEventListener("click", async function(event) {
@@ -244,10 +248,10 @@
     document.addEventListener("drop", async function(e) {
       e.preventDefault()
 
-      const files = e.dataTransfer.files
-      if (files.length > 0) {
-        let file = files[0]
-        fileHandle = file
+      const items = e.dataTransfer.items
+      if (items.length > 0) {
+        fileHandle = await items[0].getAsFileSystemHandle()
+        let file = await fileHandle.getFile()
         let contents = await file.text();
         Move.import(contents)
         populateColumns(currentMove?.name)
@@ -256,7 +260,8 @@
 
     let save = function() {
       if (!fileHandle) {
-        console.log("No file to save to!");
+        console.log(Move.export());
+        alert("No file to save to! JSON content has been outputted to the console instead.")
         return false
       }
       return writeFile(fileHandle, Move.export())
@@ -272,7 +277,7 @@
           await writer.write(0, new TextEncoder().encode(contents));
           // Close the file and write the contents to disk
           await writer.close();
-          return;
+          return true;
         }
         // For Chrome 83 and later.
         // Create a FileSystemWritableFileStream to write to.
