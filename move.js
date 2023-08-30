@@ -3,9 +3,9 @@ let moves = []
 class Move {
   constructor(name) {
     this.name = name;
-    this.difficulty = 3;
-    this.category = "None";
-    this.aliases = [];
+    this.difficulty = undefined;
+    this.category = undefined;
+    this.aliases = "";
 
     this.parents = [];
     this.children = [];
@@ -49,6 +49,7 @@ class Move {
   }
 
   static search(query) {
+    // TODO: Add Aliases
     if (!query || query.trim().length <= 0) { return moves }
     query = query.toLowerCase().trim()
     var results = {}
@@ -125,11 +126,11 @@ class Move {
       Object.assign(node, rest)
 
       // Establish parent-child relationships
-      parents.forEach(parentName => {
+      parents?.forEach(parentName => {
         node.addParent(parentName);
       });
 
-      children.forEach(childName => {
+      children?.forEach(childName => {
         node.addChild(childName);
       });
     });
@@ -144,18 +145,19 @@ class Move {
       const parentNames = parents.map(parent => parent.name);
       const childrenNames = children.map(child => child.name);
 
-      return {...rest, parents: parentNames, children: childrenNames};
+      let nodeData = {...rest, parents: parentNames, children: childrenNames}
+      for (const [key, value] of Object.entries(nodeData)) {
+        let isEmpty = false
+        isEmpty ||= !value
+        isEmpty ||= typeof value === "string" && !value.trim()
+        isEmpty ||= Array.isArray(value) && value.length === 0
+        isEmpty ||= typeof value === "object" && Object.keys(value).length === 0
+        if (isEmpty) { delete nodeData[key] }
+      }
+
+      return nodeData
     });
 
     return JSON.stringify(nodesJSON, null, 2); // Indent for readability
   }
 }
-
-// const trick = new Move("Trick");
-// const childNode1 = trick.addChild("Child Move 1");
-// const parentNode1 = trick.addParent("Parent Move 1");
-// const childNode2 = trick.addChild("Child Move 2");
-// const parentNode2 = trick.addParent("Parent Move 2");
-// const grandparentNode = parentNode2.addParent("Parent2 Parent");
-// const grandchildNode = childNode2.addChild("Child2 Child");
-// console.log(Move.export());

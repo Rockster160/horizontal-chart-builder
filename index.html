@@ -65,11 +65,11 @@
               <span class="hidden" value="5">Expert</span>
             </span>
           </label> <br>
-          <input type="range" id="difficulty" name="difficulty" min="1" max="5" step="1">
+          <input type="range" id="difficulty" name="difficulty" min="1" max="5" step="1" default="1">
         </div>
 
         <div class="field">
-          <input type="radio" name="category" id="none" value="None">
+          <input type="radio" name="category" id="none" value="" default>
           <label for="none">None</label><br>
           <input type="radio" name="category" id="vault" value="Vault">
           <label for="vault">Vault</label><br>
@@ -91,7 +91,7 @@
 
         <div class="field">
           <label for="aliases">Aliases (Comma Separated)</label>
-          <input type="text" name="aliases" value="">
+          <input type="text" name="aliases" value="" default="">
         </div>
       </form>
     </div>
@@ -126,6 +126,20 @@
     }
     displayRangeVal()
     document.querySelector("#difficulty").addEventListener("input", displayRangeVal);
+
+    let resetFormDefaults = function() {
+      let form = document.querySelector("form")
+      form.querySelectorAll("input:not([type='radio']):not([type='checkbox'])").forEach(input => {
+        input.value = input.getAttribute("default")
+      })
+      form.querySelectorAll("input[type='checkbox']").forEach(input => {
+        input.checked = input.hasAttribute("default")
+      })
+      form.querySelectorAll("input[type='radio'][default]").forEach(input => {
+        input.checked = true
+      })
+      displayRangeVal()
+    }
 
     document.querySelector("form").addEventListener("change", function(evt) {
       let form = document.querySelector("form")
@@ -269,12 +283,16 @@
       childColumn.innerHTML = "";
       grandchildColumn.innerHTML = "";
 
+      resetFormDefaults()
       let form = document.querySelector("form")
-      for (const [key, value] of Object.entries(rest)) {
+      for (const [key, value] of Object.entries(compact(rest))) {
         let field = form.querySelector(`[name="${key}"]`)
         switch (field.type) {
           case "radio": case "checkbox":
-            form.querySelector(`[name="${key}"][value=${value}]`).checked = true; break;
+            let input = form.querySelector(`[name="${key}"][value="${value}"]`)
+            input ||= form.querySelector(`[name="${key}"][default]`)
+            input.checked = true
+            break;
           default: field.value = value
         }
       }
@@ -328,6 +346,18 @@
         populateColumns(currentMove?.name)
       }
     })
+
+    let compact = function(json) {
+      for (const [key, value] of Object.entries(json)) {
+        let isEmpty = false
+        isEmpty ||= !value
+        isEmpty ||= typeof value === "string" && !value.trim()
+        isEmpty ||= Array.isArray(value) && value.length === 0
+        isEmpty ||= typeof value === "object" && Object.keys(value).length === 0
+        if (isEmpty) { delete json[key] }
+      }
+      return json
+    }
 
     let save = function() {
       if (!fileHandle) {
