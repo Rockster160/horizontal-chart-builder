@@ -1,6 +1,9 @@
 [
   {
     "name": "Movement",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [],
     "children": [
       "Balancing",
@@ -9,6 +12,9 @@
   },
   {
     "name": "Balancing",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Movement"
     ],
@@ -16,6 +22,9 @@
   },
   {
     "name": "Landing",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Movement"
     ],
@@ -30,6 +39,9 @@
   },
   {
     "name": "Bent Knee",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Landing"
     ],
@@ -37,6 +49,9 @@
   },
   {
     "name": "Falls",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Landing"
     ],
@@ -51,6 +66,9 @@
   },
   {
     "name": "Ground Kong",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Landing"
     ],
@@ -58,6 +76,9 @@
   },
   {
     "name": "Precision",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Landing"
     ],
@@ -69,6 +90,9 @@
   },
   {
     "name": "Safety Tap",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Landing"
     ],
@@ -76,6 +100,9 @@
   },
   {
     "name": "Spiderman",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Landing"
     ],
@@ -83,6 +110,9 @@
   },
   {
     "name": "Back",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Falls"
     ],
@@ -90,6 +120,9 @@
   },
   {
     "name": "Front",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Falls"
     ],
@@ -97,6 +130,9 @@
   },
   {
     "name": "Side",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Falls",
       "Vaults"
@@ -105,6 +141,9 @@
   },
   {
     "name": "Squat-Back",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Falls"
     ],
@@ -112,6 +151,9 @@
   },
   {
     "name": "Squat-Front",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Falls"
     ],
@@ -119,13 +161,51 @@
   },
   {
     "name": "Squat-Side",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Falls"
     ],
     "children": []
   },
   {
+    "name": "Bar",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
+    "parents": [
+      "Precision"
+    ],
+    "children": []
+  },
+  {
+    "name": "Running",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
+    "parents": [
+      "Precision",
+      "Cat"
+    ],
+    "children": []
+  },
+  {
+    "name": "Standing",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
+    "parents": [
+      "Precision",
+      "Cat"
+    ],
+    "children": []
+  },
+  {
     "name": "Vaults",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [],
     "children": [
       "Side",
@@ -149,30 +229,10 @@
     ]
   },
   {
-    "name": "Bar",
-    "parents": [
-      "Precision"
-    ],
-    "children": []
-  },
-  {
-    "name": "Running",
-    "parents": [
-      "Precision",
-      "Cat"
-    ],
-    "children": []
-  },
-  {
-    "name": "Standing",
-    "parents": [
-      "Precision",
-      "Cat"
-    ],
-    "children": []
-  },
-  {
     "name": "Cat",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Wall-Ledge"
     ],
@@ -187,6 +247,9 @@
   },
   {
     "name": "Butterfly",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -194,6 +257,9 @@
   },
   {
     "name": "Dash",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -201,6 +267,9 @@
   },
   {
     "name": "Gate",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -208,6 +277,9 @@
   },
   {
     "name": "Glide",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -215,6 +287,9 @@
   },
   {
     "name": "Kash",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -222,6 +297,9 @@
   },
   {
     "name": "Kong",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -229,6 +307,9 @@
   },
   {
     "name": "Lazy",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -236,6 +317,9 @@
   },
   {
     "name": "Monkey",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -243,6 +327,9 @@
   },
   {
     "name": "Pop",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -250,6 +337,9 @@
   },
   {
     "name": "Reverse",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -257,6 +347,9 @@
   },
   {
     "name": "Reverse Safety",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -264,6 +357,9 @@
   },
   {
     "name": "Rotary",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -271,6 +367,9 @@
   },
   {
     "name": "Safety",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -278,6 +377,9 @@
   },
   {
     "name": "Speed",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -285,6 +387,9 @@
   },
   {
     "name": "Spin",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -292,6 +397,9 @@
   },
   {
     "name": "Thief",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -299,6 +407,9 @@
   },
   {
     "name": "Turn",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Vaults"
     ],
@@ -306,6 +417,9 @@
   },
   {
     "name": "Wall-Ledge",
+    "difficulty": "5",
+    "category": "Ukemi",
+    "aliases": "climb-up, somethnig, trick",
     "parents": [],
     "children": [
       "Cat",
@@ -317,42 +431,10 @@
     ]
   },
   {
-    "name": "Climb Up",
-    "parents": [
-      "Wall-Ledge"
-    ],
-    "children": []
-  },
-  {
-    "name": "Crane",
-    "parents": [
-      "Wall-Ledge"
-    ],
-    "children": []
-  },
-  {
-    "name": "Tictac",
-    "parents": [
-      "Wall-Ledge"
-    ],
-    "children": []
-  },
-  {
-    "name": "Wallrun",
-    "parents": [
-      "Wall-Ledge"
-    ],
-    "children": []
-  },
-  {
-    "name": "Wallstop",
-    "parents": [
-      "Wall-Ledge"
-    ],
-    "children": []
-  },
-  {
     "name": "Gargoyle",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Cat"
     ],
@@ -360,6 +442,9 @@
   },
   {
     "name": "Half",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Cat"
     ],
@@ -367,6 +452,9 @@
   },
   {
     "name": "Quarter",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Cat"
     ],
@@ -374,13 +462,69 @@
   },
   {
     "name": "Sideways",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Cat"
     ],
     "children": []
   },
   {
+    "name": "Climb Up",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": []
+  },
+  {
+    "name": "Crane",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": []
+  },
+  {
+    "name": "Tictac",
+    "difficulty": "1",
+    "category": "Walls",
+    "aliases": "Tack",
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": []
+  },
+  {
+    "name": "Wallrun",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": []
+  },
+  {
+    "name": "Wallstop",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
+    "parents": [
+      "Wall-Ledge"
+    ],
+    "children": []
+  },
+  {
     "name": "Barwork",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [],
     "children": [
       "Bar kip"
@@ -388,6 +532,9 @@
   },
   {
     "name": "Bar kip",
+    "difficulty": 3,
+    "category": "None",
+    "aliases": [],
     "parents": [
       "Barwork"
     ],

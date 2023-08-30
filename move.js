@@ -3,6 +3,10 @@ let moves = []
 class Move {
   constructor(name) {
     this.name = name;
+    this.difficulty = 3;
+    this.category = "None";
+    this.aliases = [];
+
     this.parents = [];
     this.children = [];
     moves.push(this)
@@ -63,15 +67,17 @@ class Move {
     const importedNodes = Array.isArray(jsonData) ? jsonData : JSON.parse(jsonData);
 
     importedNodes.forEach(nodeData => {
+      const {name, parents, children, ...rest} = nodeData
       // Create nodes and store them in the map
-      const node = Move.findOrCreate(nodeData.name)
+      const node = Move.findOrCreate(name)
+      Object.assign(node, rest)
 
       // Establish parent-child relationships
-      nodeData.parents.forEach(parentName => {
+      parents.forEach(parentName => {
         node.addParent(parentName);
       });
 
-      nodeData.children.forEach(childName => {
+      children.forEach(childName => {
         node.addChild(childName);
       });
     });
@@ -82,14 +88,11 @@ class Move {
 
   static export() {
     const nodesJSON = moves.map(node => {
-      const parents = node.parents.map(parent => parent.name);
-      const children = node.children.map(child => child.name);
+      const {parents, children, ...rest} = node
+      const parentNames = parents.map(parent => parent.name);
+      const childrenNames = children.map(child => child.name);
 
-      return {
-        name: node.name,
-        parents: parents,
-        children: children
-      };
+      return {...rest, parents: parentNames, children: childrenNames};
     });
 
     return JSON.stringify(nodesJSON, null, 2); // Indent for readability

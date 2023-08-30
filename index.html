@@ -4,46 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./move.js" charset="utf-8"></script>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+  <link rel="stylesheet" href="./styles.css">
+  <style media="screen">
+    /* Rocco styles. Feel free to kill. */
+    .hidden {
+      display: none;
     }
 
-    .columns-container {
-      display: flex;
-      height: 100%;
-      width: 100%;
+    .button.save {
+      background-color: #0160FF;
+      border-color: #0160FF;
+      color: white;
+      position: absolute;
+      bottom: 30px;
+
+      &:hover {
+        background-color: #4B2AB0;
+        border-color: #4B2AB0;
+      }
     }
 
-    .column {
-      flex: 1;
+    .current-column:has(.load, .root-node) {
+      .form { display: none; }
+    }
+
+    form {
       height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      overflow-y: auto;
-    }
 
-    .button {
-      position: absolute;
-      top: 10px;
+      .field {
+        margin-bottom: 10px;
+      }
     }
-
-    .node, .load {
-      margin: 10px 0;
-      padding: 10px;
-      border: 1px solid #aaa;
-      background-color: #fff;
-    }
-
-    .root-node {
-    }
-</style>
+  </style>
 </head>
 <body>
   <div class="columns-container">
@@ -58,6 +53,47 @@
       <div class="nodes">
         <div class="load">&lt;Click to Load JSON&gt;</div>
       </div>
+      <form class="form">
+        <div class="field">
+          <label for="difficulty">
+            Difficulty:
+            <span class="range-display">
+              <span class="hidden" value="1">Beginner</span>
+              <span class="hidden" value="2">Pre Intermediate</span>
+              <span class="hidden" value="3">Intermediate 1</span>
+              <span class="hidden" value="4">Intermediate 2</span>
+              <span class="hidden" value="5">Expert</span>
+            </span>
+          </label> <br>
+          <input type="range" id="difficulty" name="difficulty" min="1" max="5" step="1">
+        </div>
+
+        <div class="field">
+          <input type="radio" name="category" id="none" value="None">
+          <label for="none">None</label><br>
+          <input type="radio" name="category" id="vault" value="Vault">
+          <label for="vault">Vault</label><br>
+          <input type="radio" name="category" id="flips" value="Flips">
+          <label for="flips">Flips</label><br>
+          <input type="radio" name="category" id="ukemi" value="Ukemi">
+          <label for="ukemi">Ukemi</label><br>
+          <input type="radio" name="category" id="drops" value="Drops">
+          <label for="drops">Drops</label><br>
+          <input type="radio" name="category" id="walls" value="Walls">
+          <label for="walls">Walls</label><br>
+          <input type="radio" name="category" id="bars" value="Bars">
+          <label for="bars">Bars</label><br>
+          <input type="radio" name="category" id="precision" value="Precision">
+          <label for="precision">Precision</label><br>
+          <input type="radio" name="category" id="tricking" value="Tricking">
+          <label for="tricking">Tricking</label><br>
+        </div>
+
+        <div class="field">
+          <label for="aliases">Aliases (Comma Separated)</label>
+          <input type="text" name="aliases" value="">
+        </div>
+      </form>
     </div>
     <div class="column child-column">
       <button class="button add-btn add-child">Add Node</button>
@@ -77,6 +113,29 @@
 
     let currentMove = undefined // Placeholder for whatever move is currently selected
     let fileHandle = undefined // Placeholder for the opened file
+
+    // Show the current value for the range fields
+    let displayRangeVal = function() {
+      let input = document.querySelector("#difficulty")
+      let parent = input.parentElement
+      parent.querySelectorAll(".range-display span").forEach(display => {
+        display.classList.add("hidden")
+      })
+      let selected = parent.querySelector(`.range-display [value='${input.value}']`)
+      selected.classList.remove("hidden")
+    }
+    displayRangeVal()
+    document.querySelector("#difficulty").addEventListener("input", displayRangeVal);
+
+    document.querySelector("form").addEventListener("change", function(evt) {
+      let form = document.querySelector("form")
+      const data = new FormData(form);
+      const json = Object.fromEntries(data.entries());
+
+      if (currentMove) {
+        Object.assign(currentMove, json)
+      }
+    })
 
     document.querySelectorAll(".add-btn").forEach((button, index) => {
       button.addEventListener("click", function() {
@@ -195,6 +254,7 @@
       if (!movename || movename == rootname) { return populateEmpty() }
 
       let move = Move.find(movename)
+      const {name, parents, children, ...rest} = move
       currentMove = move
       const grandparentColumn = document.querySelector(".grandparent-column .nodes");
       const parentColumn = document.querySelector(".parent-column .nodes");
@@ -209,6 +269,17 @@
       childColumn.innerHTML = "";
       grandchildColumn.innerHTML = "";
 
+      let form = document.querySelector("form")
+      for (const [key, value] of Object.entries(rest)) {
+        let field = form.querySelector(`[name="${key}"]`)
+        switch (field.type) {
+          case "radio": case "checkbox":
+            form.querySelector(`[name="${key}"][value=${value}]`).checked = true; break;
+          default: field.value = value
+        }
+      }
+      displayRangeVal()
+
       let currentNode = addColumnNode(move, currentColumn)
       // Add current move, and allow it to be editable
       currentNode.classList.add("current")
@@ -216,7 +287,7 @@
 
       // Populate left column with parents
       let hasGrandparents = false
-      move.parents.forEach(parent => {
+      parents.forEach(parent => {
         addColumnNode(parent, parentColumn)
         // Populate outer left column with grandparents
         parent.parents.forEach(grandparent => {
@@ -226,14 +297,14 @@
       });
 
       // Add a root node to any parent columns that are empty
-      if (move.parents.length == 0) {
+      if (parents.length == 0) {
         addColumnNode(null, parentColumn)
       } else if (!hasGrandparents) {
         addColumnNode(null, grandparentColumn)
       }
 
       // Populate right column with children
-      move.children.forEach(child => {
+      children.forEach(child => {
         addColumnNode(child, childColumn)
         // Populate outer right column with grandchildren
         child.children.forEach(grandchild => {
