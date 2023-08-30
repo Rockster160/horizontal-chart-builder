@@ -48,6 +48,58 @@ class Move {
     }
   }
 
+  static search(query) {
+    if (!query || query.trim().length <= 0) { return moves }
+    query = query.toLowerCase().trim()
+    var results = {}
+    var found = []
+
+    moves.forEach(function(option) {
+      var word = option.name
+      var compare = word.toLowerCase().trim()
+      var score = 0
+
+      if (compare == query) { score += 1000000 }
+      if (compare.indexOf(query) == 0) { score += 100000 }
+      if (compare.indexOf(query) >= 0) { score += 10000 }
+
+      var last_idx = -1
+      var word_length = word.length
+      var bad_word = false
+      query.split("").forEach(function(letter) {
+        if (bad_word) { return }
+        var at = compare.indexOf(letter)
+        if (at == -1) {
+          bad_word = true
+          score = 0
+          return
+        }
+
+        score += word_length - at
+        if (at >= last_idx) { score += word_length - at }
+        compare = compare.replace(letter, "")
+      })
+
+      if (score > 0) {
+        found.push(option)
+        results[word] = score
+      }
+    })
+
+    return found.sort(function(a, b) {
+      var aOrder = results[a.name]
+      var bOrder = results[b.name]
+
+      if (aOrder < bOrder) {
+        return 1
+      } else if (aOrder > bOrder) {
+        return -1
+      } else { // equal
+        return 0
+      }
+    })
+  }
+
   static find(name) {
     return moves.find(node => node.name.toLowerCase() === name.toLowerCase());
   }
